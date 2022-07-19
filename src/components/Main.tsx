@@ -1,13 +1,10 @@
-import { useState } from 'react';
-import { Col, Spin, Space } from 'antd';
+import { Col } from 'antd';
 
-import reactLogo from '../assets/react.svg';
-import '../App.css';
 import MetaMaskCard from './connectorsCards/MetaMaskCard';
 
-const Main = () => {
-  const [count, setCount] = useState(0);
+import '../App.css';
 
+const Main = () => {
   return (
     <div className="App">
       <Col span={4} offset={4} className="App_logo">
