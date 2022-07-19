@@ -4,6 +4,12 @@ import { Network } from '@web3-react/network';
 import { getAddChainParameters } from '../chains';
 import useConnectWithSelect from './customHooks/useConnectWithSelect';
 import ChainSelect from './ChainSelect';
+import {
+  DisconnectOutlined,
+  ExclamationCircleOutlined,
+  WalletOutlined,
+} from '@ant-design/icons';
+import { Button } from 'antd';
 
 interface Props {
   connector: MetaMask | Network;
@@ -34,22 +40,28 @@ const ConnectWithSelect = ({
 
   if (error) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {
-          <ChainSelect
-            chainId={desiredChainId}
-            switchChain={switchChain}
-            displayDefault={displayDefault}
-            chainIds={chainIds}
-          />
-        }
+      <>
+        <ChainSelect
+          chainId={desiredChainId}
+          switchChain={switchChain}
+          displayDefault={displayDefault}
+          chainIds={chainIds}
+        />
         <div style={{ marginBottom: '1rem' }} />
-        <button onClick={onClick}>Try Again?</button>
-      </div>
+        <Button
+          icon={<ExclamationCircleOutlined />}
+          type="primary"
+          onClick={onClick}
+          block
+          danger
+        >
+          Try Again?
+        </Button>
+      </>
     );
   } else if (isActive) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <>
         <ChainSelect
           chainId={desiredChainId === -1 ? -1 : chainId}
           switchChain={switchChain}
@@ -57,7 +69,11 @@ const ConnectWithSelect = ({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <button
+        <Button
+          type="primary"
+          icon={<WalletOutlined />}
+          block
+          ghost
           onClick={() => {
             if (connector?.deactivate) {
               void connector.deactivate();
@@ -67,12 +83,12 @@ const ConnectWithSelect = ({
           }}
         >
           Disconnect
-        </button>
-      </div>
+        </Button>
+      </>
     );
   } else {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <>
         <ChainSelect
           chainId={desiredChainId}
           switchChain={isActivating ? undefined : switchChain}
@@ -80,7 +96,10 @@ const ConnectWithSelect = ({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <button
+        <Button
+          type="primary"
+          block
+          icon={<DisconnectOutlined />}
           onClick={
             isActivating
               ? undefined
@@ -104,8 +123,8 @@ const ConnectWithSelect = ({
           disabled={isActivating}
         >
           Connect
-        </button>
-      </div>
+        </Button>
+      </>
     );
   }
 };

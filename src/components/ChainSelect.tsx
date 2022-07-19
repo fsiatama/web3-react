@@ -23,6 +23,7 @@ const ChainSelect = ({
         switchChain?.(Number(value));
       }}
       disabled={switchChain === undefined}
+      style={{ width: '100%' }}
     >
       {displayDefault ? <Option value={-1}>Default Chain</Option> : null}
       {chainIds.map(chainId => (
