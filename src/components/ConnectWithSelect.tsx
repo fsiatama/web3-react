@@ -4,12 +4,7 @@ import { Network } from '@web3-react/network';
 import { getAddChainParameters } from '../chains';
 import useConnectWithSelect from './customHooks/useConnectWithSelect';
 import ChainSelect from './ChainSelect';
-import {
-  DisconnectOutlined,
-  ExclamationCircleOutlined,
-  WalletOutlined,
-} from '@ant-design/icons';
-import { Button } from 'antd';
+import Button from './Button';
 
 interface Props {
   connector: MetaMask | Network;
@@ -48,15 +43,9 @@ const ConnectWithSelect = ({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <Button
-          icon={<ExclamationCircleOutlined />}
-          type="primary"
-          onClick={onClick}
-          block
-          danger
-        >
-          Try Again?
-        </Button>
+        <div className="flex space-x-2 justify-center">
+          <Button onClick={onClick}>Try Again?</Button>
+        </div>
       </>
     );
   } else if (isActive) {
@@ -69,21 +58,19 @@ const ConnectWithSelect = ({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <Button
-          type="primary"
-          icon={<WalletOutlined />}
-          block
-          ghost
-          onClick={() => {
-            if (connector?.deactivate) {
-              void connector.deactivate();
-            } else {
-              void connector.resetState();
-            }
-          }}
-        >
-          Disconnect
-        </Button>
+        <div className="flex space-x-2 justify-center">
+          <Button
+            onClick={() => {
+              if (connector?.deactivate) {
+                void connector.deactivate();
+              } else {
+                void connector.resetState();
+              }
+            }}
+          >
+            Disconnect
+          </Button>
+        </div>
       </>
     );
   } else {
@@ -96,34 +83,33 @@ const ConnectWithSelect = ({
           chainIds={chainIds}
         />
         <div style={{ marginBottom: '1rem' }} />
-        <Button
-          type="primary"
-          block
-          icon={<DisconnectOutlined />}
-          onClick={
-            isActivating
-              ? undefined
-              : () =>
-                  connector instanceof Network
-                    ? connector
-                        .activate(
-                          desiredChainId === -1 ? undefined : desiredChainId,
-                        )
-                        .then(() => setError(undefined))
-                        .catch(setError)
-                    : connector
-                        .activate(
-                          desiredChainId === -1
-                            ? undefined
-                            : getAddChainParameters(desiredChainId),
-                        )
-                        .then(() => setError(undefined))
-                        .catch(setError)
-          }
-          disabled={isActivating}
-        >
-          Connect
-        </Button>
+        <div className="flex space-x-2 justify-center">
+          <Button
+            onClick={
+              isActivating
+                ? () => {}
+                : () =>
+                    connector instanceof Network
+                      ? connector
+                          .activate(
+                            desiredChainId === -1 ? undefined : desiredChainId,
+                          )
+                          .then(() => setError(undefined))
+                          .catch(setError)
+                      : connector
+                          .activate(
+                            desiredChainId === -1
+                              ? undefined
+                              : getAddChainParameters(desiredChainId),
+                          )
+                          .then(() => setError(undefined))
+                          .catch(setError)
+            }
+            disabled={isActivating}
+          >
+            Connect
+          </Button>
+        </div>
       </>
     );
   }

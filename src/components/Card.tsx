@@ -1,4 +1,3 @@
-import { Card as AntCard, Space, Typography } from 'antd';
 import { Web3ReactHooks } from '@web3-react/core';
 import { MetaMask } from '@web3-react/metamask';
 import { Network } from '@web3-react/network';
@@ -7,8 +6,6 @@ import Accounts from './Accounts';
 import Chain from './Chain';
 import ConnectWithSelect from './ConnectWithSelect';
 import Status from './Status';
-
-const { Text } = Typography;
 
 interface Props {
   connector: MetaMask | Network;
@@ -34,14 +31,23 @@ const Card = ({
   provider,
 }: Props) => {
   return (
-    <AntCard
-      title={<Text>{getName(connector)}</Text>}
-      style={{ width: '20rem' }}
-    >
-      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Status isActivating={isActivating} isActive={isActive} error={error} />
-        <Chain chainId={chainId} />
-        <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
+    <div className="flex justify-center">
+      <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
+        <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">
+          <Status
+            isActivating={isActivating}
+            isActive={isActive}
+            error={error}
+          />
+        </h5>
+        <div className="mb-4">
+          <Chain chainId={chainId} />
+          <Accounts
+            accounts={accounts}
+            provider={provider}
+            ENSNames={ENSNames}
+          />
+        </div>
         <ConnectWithSelect
           connector={connector}
           chainId={chainId}
@@ -50,8 +56,8 @@ const Card = ({
           error={error}
           setError={setError}
         />
-      </Space>
-    </AntCard>
+      </div>
+    </div>
   );
 };
 
